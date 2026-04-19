@@ -213,6 +213,7 @@ jobs:
     needs:
       - build-cli
       - version
+    if: github.repository == 'anomalyco/opencode'
     continue-on-error: false
     env:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
