@@ -1,0 +1,13 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "mcp": {
+        "roam-code": {
+            "type": "local",
+            "enabled": true,
+            "command": ["roam", "mcp"],
+            "environment": {
+                "ROAM_MCP_PRESET": "full"
+            }
+        }
+    }
+}
