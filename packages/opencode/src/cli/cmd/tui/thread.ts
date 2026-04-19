@@ -214,6 +214,9 @@ export const TuiThreadCommand = cmd({
             const server = await client.call("snapshot", undefined)
             return [tui, server]
           },
+          async onReload() {
+            await client.call("reload", undefined)
+          },
           config,
           directory: cwd,
           fetch: transport.fetch,

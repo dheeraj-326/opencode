@@ -109,6 +109,7 @@ export function tui(input: {
   args: Args
   config: TuiConfig.Info
   onSnapshot?: () => Promise<string[]>
+  onReload?: () => Promise<void>
   directory?: string
   fetch?: typeof fetch
   headers?: RequestInit["headers"]
@@ -177,7 +178,7 @@ export function tui(input: {
                                         <FrecencyProvider>
                                           <PromptHistoryProvider>
                                             <PromptRefProvider>
-                                              <App onSnapshot={input.onSnapshot} />
+                                              <App onSnapshot={input.onSnapshot} onReload={input.onReload} />
                                             </PromptRefProvider>
                                           </PromptHistoryProvider>
                                         </FrecencyProvider>
@@ -202,7 +203,7 @@ export function tui(input: {
   })
 }
 
-function App(props: { onSnapshot?: () => Promise<string[]> }) {
+function App(props: { onSnapshot?: () => Promise<string[]>; onReload?: () => Promise<void> }) {
   const tuiConfig = useTuiConfig()
   const route = useRoute()
   const dimensions = useTerminalDimensions()
@@ -683,6 +684,33 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
           message: `Heap snapshot written to ${files?.join(", ")}`,
           duration: 5000,
         })
+        dialog.clear()
+      },
+    },
+    {
+      title: "Reload configuration",
+      value: "config.reload",
+      category: "System",
+      slash: {
+        name: "reload",
+      },
+      hidden: !props.onReload,
+      onSelect: async (dialog) => {
+        if (!props.onReload) return
+        try {
+          await props.onReload()
+          toast.show({
+            variant: "success",
+            message: "Configuration reloaded",
+            duration: 3000,
+          })
+        } catch (err) {
+          toast.show({
+            variant: "error",
+            message: `Failed to reload: ${err instanceof Error ? err.message : String(err)}`,
+            duration: 5000,
+          })
+        }
         dialog.clear()
       },
     },
