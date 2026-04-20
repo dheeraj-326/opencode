@@ -8,6 +8,11 @@
             "environment": {
                 "ROAM_MCP_PRESET": "full"
             }
+        },
+        "crawl4ai": {
+            "type": "local",
+            "command": ["uvx", "crawl-mcp"],
+            "enabled": true
         }
     }
 }
