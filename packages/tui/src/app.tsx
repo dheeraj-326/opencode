@@ -113,6 +113,7 @@ const appBindingCommands = [
   "provider.connect",
   "console.org.switch",
   "opencode.status",
+  "opencode.reload",
   "theme.switch",
   "theme.switch_mode",
   "theme.mode.lock",
@@ -754,6 +755,21 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
           dialog.replace(() => <DialogStatus />)
         },
         category: "System",
+      },
+      {
+        name: "opencode.reload",
+        title: "Reload config & permissions & LLM & AGENTS.md & plugins",
+        slashName: "reload",
+        category: "System",
+        run: async () => {
+          try {
+            await sdk.client.instance.reload()
+            toast.show({ message: "Reloading instance…", variant: "info" })
+          } catch (e) {
+            toast.error(e)
+          }
+          dialog.clear()
+        },
       },
       {
         name: "theme.switch",
